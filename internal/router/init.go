@@ -5,9 +5,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/semenovem/report/config"
+	"github.com/semenovem/report/internal/action"
 	"github.com/semenovem/report/internal/controller"
 	"github.com/semenovem/report/internal/lg"
-	"github.com/semenovem/report/internal/provider"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func New(
 	ctx context.Context,
 	logger *lg.Lg,
 	config *config.Main,
-	provider *provider.Provider,
+	bl *action.BL,
 ) (*Router, error) {
 	var (
 		ll = logger.Named("router")
@@ -60,7 +60,7 @@ func New(
 		middleware.CORSWithConfig(corsConfig),
 	)
 
-	cnt := controller.New(config, logger, provider)
+	cnt := controller.New(config, logger, bl)
 
 	r := &Router{
 		ctx:    ctx,

@@ -15,7 +15,7 @@ func (p *Lg) save(level Level, format string, v ...any) {
 		out = append(out, []byte(fmt.Sprintf(" [%s]", time.Now().Format(time.RFC3339)))...)
 	}
 
-	if p.ctx != nil {
+	if p.ctx != nil && p.base.requestIDExtractor != nil {
 		s := " [req_id:" + p.base.requestIDExtractor(p.ctx) + "]"
 		out = append(out, []byte(s)...)
 	}
