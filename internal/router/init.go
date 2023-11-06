@@ -2,20 +2,23 @@ package router
 
 import (
 	"context"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/semenovem/report/config"
-	"github.com/semenovem/report/internal/action"
 	"github.com/semenovem/report/internal/controller"
 	"github.com/semenovem/report/internal/lg"
+	"github.com/semenovem/report/internal/provider"
+	"io"
 	"net/http"
+	"strings"
 )
 
 func New(
 	ctx context.Context,
 	logger *lg.Lg,
 	config *config.Main,
-	bl *action.BL,
+	provider *provider.Provider,
 ) (*Router, error) {
 	var (
 		ll = logger.Named("router")
@@ -23,10 +26,24 @@ func New(
 	)
 
 	echo.NotFoundHandler = func(c echo.Context) error {
-		return c.JSON(http.StatusNotFound, panicMessage{
-			Code:    http.StatusNotFound,
-			Message: "method didn't exists",
-		})
+
+		m := map[string]string{
+			"code":        "404",
+			"message":     "method didn't exists",
+			"path":        c.Path(),
+			"query":       c.QueryString(),
+			"ParamNames":  strings.Join(c.ParamNames(), ", "),
+			"ParamValues": strings.Join(c.ParamValues(), ", "),
+			"headers":     fmt.Sprintf("%+v", c.Request().Header),
+		}
+		bodyResp, err := io.ReadAll(c.Request().Body)
+		if err != nil {
+			ll.Named("io.ReadAll").Error(err.Error())
+		}
+
+		m["body"] = string(bodyResp)
+
+		return c.JSON(http.StatusNotFound, m)
 	}
 
 	corsConfig := middleware.CORSConfig{
@@ -60,7 +77,7 @@ func New(
 		middleware.CORSWithConfig(corsConfig),
 	)
 
-	cnt := controller.New(config, logger, bl)
+	cnt := controller.New(config, logger, provider)
 
 	r := &Router{
 		ctx:    ctx,

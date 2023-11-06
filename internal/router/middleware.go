@@ -55,9 +55,11 @@ func tokenMiddleware(
 ) echo.MiddlewareFunc {
 	ll := logger.Named("tokenMiddleware")
 
+	ll.Infof("start")
+
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			ll.Infof(c.Request().Header.Get("Authorization"))
+			//ll.Infof(c.Request().Header.Get("Authorization"))
 			return next(c)
 		}
 	}

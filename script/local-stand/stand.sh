@@ -63,6 +63,7 @@ case "$OPER" in
     -w "/debugging" \
     -v "${ROOT}/../../:/debugging:ro" \
     --env-file "${ROOT}/../../deployment/.local.env" \
+    -e "INDEX_HTML_PATH=/debugging/html/index.html" \
     \
     "$(func_get_work_image)" bash -c "$CMD"
   ;;

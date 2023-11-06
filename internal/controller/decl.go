@@ -3,25 +3,25 @@ package controller
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/semenovem/report/config"
-	"github.com/semenovem/report/internal/action"
 	"github.com/semenovem/report/internal/lg"
+	"github.com/semenovem/report/internal/provider"
 	"net/http"
 )
 
 type Controller struct {
-	config *config.Main
-	logger *lg.Lg
-	bl     *action.BL
+	config   *config.Main
+	logger   *lg.Lg
+	provider *provider.Provider
 }
 
-func New(c *config.Main, l *lg.Lg, bl *action.BL) *Controller {
+func New(c *config.Main, l *lg.Lg, p *provider.Provider) *Controller {
 	return &Controller{
-		config: c,
-		logger: l,
-		bl:     bl,
+		config:   c,
+		logger:   l,
+		provider: p,
 	}
 }
 
-func (cnt *Controller) errResponse(c echo.Context, err error) error {
+func (ct *Controller) errResponse(c echo.Context, err error) error {
 	return c.JSON(http.StatusInternalServerError, err.Error())
 }

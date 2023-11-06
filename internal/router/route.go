@@ -5,5 +5,7 @@ func (r *Router) addRoutes() {
 		auth = r.auth
 	)
 
-	auth.GET("/report1", r.cnt.Report1)
+	auth.GET("/", r.cnt.Index)
+
+	auth.GET("/product/list", r.cnt.ProductList)
 }
