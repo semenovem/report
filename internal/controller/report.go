@@ -6,41 +6,25 @@ import (
 	"github.com/semenovem/report/internal/provider"
 	"github.com/semenovem/report/internal/spreadsheet"
 	"net/http"
-	"strconv"
 	"time"
 )
 
-func (ct *Controller) ProductList(c echo.Context) error {
+func (ct *Controller) ReportProducts(c echo.Context) error {
 	var (
-		ctx = c.Request().Context()
-		ll  = ct.logger.Func(ctx, "ProductList")
+		ctx   = c.Request().Context()
+		ll    = ct.logger.Func(ctx, "ReportProducts")
+		table = make([][]string, 0, 100)
 	)
 
 	ll.Infof("reported")
 
-	response, err := ct.provider.ProductList(ctx, provider.Ozon1)
-	if err != nil {
-		ll.Named("provider.ProductList").Debug(err.Error())
-		return ct.errResponse(c, err)
-	}
-
-	table := make([][]string, 0, len(response.Result.Items)+1)
-
-	table = append(table, []string{
-		"num", "product_id", "offer_id", "is_fbo_visible", "is_fbs_visible", "archived", "is_discounted",
-	})
-
-	for i, m := range response.Result.Items {
-		row := []string{
-			strconv.Itoa(i + 1),
-			strconv.FormatInt(m.ProductID, 10),
-			m.OfferID,
-			strconv.FormatBool(m.IsFboVisible),
-			strconv.FormatBool(m.IsFbsVisible),
-			strconv.FormatBool(m.Archived),
-			strconv.FormatBool(m.IsDiscounted),
+	for _, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
+		tab, err := ct.mining(ctx, marketID)
+		if err != nil {
+			ll.Named("mining").Debug(err.Error())
+			return ct.errResponse(c, err)
 		}
-		table = append(table, row)
+		table = append(table, tab...)
 	}
 
 	b, err := spreadsheet.CreateCSV(table)

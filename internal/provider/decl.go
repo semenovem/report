@@ -18,6 +18,17 @@ const (
 	Ozon2 MarketID = "ozon2"
 )
 
+func (m MarketID) Name() string {
+	switch m {
+	case Ozon1:
+		return "ozon1"
+	case Ozon2:
+		return "ozon2"
+	default:
+		return "unknown"
+	}
+}
+
 var (
 	ErrUnknownMarket = errors.New("unknown market")
 	ErrNot200        = errors.New("failure")
@@ -62,6 +73,9 @@ func (p *Provider) makeHTTPClient(ctx context.Context, conn *conn, b []byte) (*h
 	case Ozon1:
 		req.Header.Set("Client-Id", p.config.Ozon.ClientID1)
 		req.Header.Set("Api-Key", p.config.Ozon.APIKey1)
+	case Ozon2:
+		req.Header.Set("Client-Id", p.config.Ozon.ClientID2)
+		req.Header.Set("Api-Key", p.config.Ozon.APIKey2)
 	default:
 		p.logger.With("conn", conn).Error(ErrUnknownMarket.Error())
 		return nil, ErrUnknownMarket

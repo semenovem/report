@@ -8,6 +8,12 @@ import (
 	"net/http"
 )
 
+const (
+	stockFBS         = "fbs"
+	stockFBO         = "fbo"
+	stockCrossBorder = "crossborder"
+)
+
 type Controller struct {
 	config   *config.Main
 	logger   *lg.Lg

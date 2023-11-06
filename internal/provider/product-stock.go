@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-func (p *Provider) ProductList(
+func (p *Provider) ProductInfoStock(
 	ctx context.Context,
 	marketID MarketID,
-) ([]*model.ProductListItem, error) {
+) ([]*model.ProductStock, error) {
 	var (
-		ll = p.logger.Named("ReportProducts")
+		ll = p.logger.Named("ProductInfoStock")
 		co = &conn{
 			marketID: marketID,
-			APIPath:  "/v2/product/list",
+			APIPath:  "/v3/product/info/stocks",
 			Method:   http.MethodPost,
 		}
 		arg = request{
@@ -26,7 +26,7 @@ func (p *Provider) ProductList(
 			LastId: "",
 			Limit:  100,
 		}
-		items = make([]*model.ProductListItem, 0)
+		items = make([]*model.ProductStock, 0)
 	)
 
 	for {
@@ -36,7 +36,7 @@ func (p *Provider) ProductList(
 			return nil, err
 		}
 
-		var resp productListResponse
+		var resp productInfoStocksResponse
 
 		if err = json.Unmarshal(b, &resp); err != nil {
 			ll.Named("Unmarshal").With("dat", string(b)).Error(err.Error())
