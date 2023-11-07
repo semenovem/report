@@ -16,10 +16,8 @@ func (ct *Controller) ReportProducts(c echo.Context) error {
 		table = make([][]string, 0, 100)
 	)
 
-	ll.Infof("reported")
-
-	for _, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
-		tab, err := ct.mining(ctx, marketID)
+	for i, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
+		tab, err := ct.mining(ctx, marketID, i == 0)
 		if err != nil {
 			ll.Named("mining").Debug(err.Error())
 			return ct.errResponse(c, err)

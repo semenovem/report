@@ -6,7 +6,11 @@ import (
 	"strconv"
 )
 
-func (ct *Controller) mining(ctx context.Context, marketID provider.MarketID) ([][]string, error) {
+func (ct *Controller) mining(
+	ctx context.Context,
+	marketID provider.MarketID,
+	header bool,
+) ([][]string, error) {
 	ll := ct.logger.Named("mining")
 
 	// Получение данных
@@ -28,25 +32,28 @@ func (ct *Controller) mining(ctx context.Context, marketID provider.MarketID) ([
 	// Таблица
 	// ---------------------------------------------
 	table := make([][]string, 0, len(products)+1)
-	table = append(table, []string{
-		"market",
-		"num",
-		"product_id",
-		"offer_id",
-		"is_fbo_visible",
-		"is_fbs_visible",
-		"archived",
-		"is_discounted",
-		// stockMap-fbs
-		"stock_fbs_present",
-		"stock_fbs_reserved",
-		// stockMap-fbo
-		"stock_fbo_present",
-		"stock_fbo_reserved",
-		// stockMap-cross-border
-		"stock_crossborder_present",
-		"stock_crossborder_reserved",
-	})
+
+	if header {
+		table = append(table, []string{
+			"market",
+			"num",
+			"product_id",
+			"offer_id",
+			"is_fbo_visible",
+			"is_fbs_visible",
+			"archived",
+			"is_discounted",
+			// stockMap-fbs
+			"stock_fbs_present",
+			"stock_fbs_reserved",
+			// stockMap-fbo
+			"stock_fbo_present",
+			"stock_fbo_reserved",
+			// stockMap-cross-border
+			"stock_crossborder_present",
+			"stock_crossborder_reserved",
+		})
+	}
 
 	for i, m := range products {
 		row := []string{

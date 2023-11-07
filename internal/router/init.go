@@ -72,7 +72,7 @@ func New(
 	}
 
 	e.Use(
-		middleware.Logger(),
+		//middleware.Logger(),
 		panicRecover(ll, config.Base.CliMode),
 		middleware.CORSWithConfig(corsConfig),
 	)
