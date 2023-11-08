@@ -16,6 +16,9 @@ help() {
   info "commands: [command [-option]]"
   info "    report  - run report (rest:${__API_REPORT_REST_PORT_EXPOSE__}, debug:${__API_REPORT_DEBUGGING_PORT_EXPOSE__}"
   info ""
+  info "    build   - build image"
+  info "    deploy  - run docker container"
+  info ""
   info "options:"
   info "    -debug        - golang application debug mode. Work for api_clients, api_admins etc"
 }
@@ -30,6 +33,8 @@ func_check_and_create_override_props &&
 for p in "$@"; do
   case "$p" in
   "report") OPER="report" ;;
+  "build") OPER="build" ;;
+  "deploy") OPER="deploy" ;;
   "-r" | "-repeat") __REPEAT__=1 ;;
   "-debug") __ARG_MODE_DEBUG__=1 ;;
   *)
@@ -67,6 +72,11 @@ case "$OPER" in
     \
     "$(func_get_work_image)" bash -c "$CMD"
   ;;
+
+"build")
+  docker build -f "${ROOT}/../Dockerfile" -t "$__DOCKER_IMAGE__" "${ROOT}/.."
+  ;;
+
 
 "curl")
   HAS=$(docker images --filter=reference="$__DOCKER_CURL_IMAGE__" -q) || exit 1

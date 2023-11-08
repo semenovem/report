@@ -9,7 +9,7 @@ FROM alpine:3.18.4
 
 WORKDIR /app
 
-COPY --chmod=0744 ./html /app/html
+COPY --from=builder --chmod=0744 /app/html /app/html
 COPY --from=builder /app-report /app/app-report
 ENV INDEX_HTML_PATH=/app/html
 
