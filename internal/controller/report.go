@@ -29,10 +29,6 @@ func (ct *Controller) ReportProducts(c echo.Context) error {
 
 	session.fileDownload = true
 
-	if ll != nil {
-		return c.JSON(200, "OKOKOK")
-	}
-
 	for i, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
 		tab, err := ct.mining(ctx, marketID, i == 0)
 		if err != nil {
