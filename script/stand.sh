@@ -68,9 +68,9 @@ case "$OPER" in
     -p "${__API_REPORT_REST_PORT_EXPOSE__}:8080" \
     -p "${__API_REPORT_DEBUGGING_PORT_EXPOSE__}:40000" \
     -w "/debugging" \
-    -v "${ROOT}/../../:/debugging:ro" \
-    --env-file "${ROOT}/../../deployment/.local.env" \
-    -e "INDEX_HTML_PATH=/debugging/html/index.html" \
+    -v "${ROOT}/../:/debugging:ro" \
+    --env-file "${ROOT}/../deployment/.local.env" \
+    -e "HTML_DIR=/debugging/html" \
     \
     "$(func_get_work_image)" bash -c "$CMD"
   ;;

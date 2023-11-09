@@ -11,7 +11,7 @@ WORKDIR /app
 
 COPY --from=builder --chmod=0744 /app/html /app/html
 COPY --from=builder /app-report /app/app-report
-ENV INDEX_HTML_PATH=/app/html/index.html
+ENV HTML_DIR=/app/html
 
 EXPOSE 8080
 

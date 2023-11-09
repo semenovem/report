@@ -87,10 +87,16 @@ func New(
 		cnt:    cnt,
 	}
 
-	r.unauth = e.Group("")
-	r.auth = r.unauth.Group("", tokenMiddleware(logger))
+	accessMiddleware, err := accessTokenMiddleware(logger, config)
+	if err != nil {
+		ll.Named("accessTokenMiddleware").Debug(err.Error())
+		return nil, err
+	}
 
-	r.addRoutes()
+	r.auth = e.Group("", accessMiddleware)
+
+	r.auth.GET("/:access_code", r.cnt.Index)
+	r.auth.POST("/product/list", r.cnt.ReportProducts)
 
 	return r, nil
 }

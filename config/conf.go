@@ -1,10 +1,17 @@
 package config
 
+const (
+	IndexHTMLFileName          = "/index.html"
+	ForbiddenHTMLFileName      = "/forbidden.html"
+	TooManyRequestHTMLFileName = "/too-many-request.html"
+)
+
 type Main struct {
 	Base Base
 	Rest Rest
 
-	IndexPath string `env:"INDEX_HTML_PATH,required"`
+	HTMLDir    string `env:"HTML_DIR,required"`
+	AccessCode string `env:"ACCESS_CODE,required"`
 
 	Ozon struct {
 		Path string `env:"OZON_PATH,required"`

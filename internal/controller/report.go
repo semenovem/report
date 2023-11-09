@@ -11,10 +11,27 @@ import (
 
 func (ct *Controller) ReportProducts(c echo.Context) error {
 	var (
-		ctx   = c.Request().Context()
-		ll    = ct.logger.Func(ctx, "ReportProducts")
-		table = make([][]string, 0, 100)
+		ctx       = c.Request().Context()
+		sessionID = c.FormValue(SessionIDName)
+		ll        = ct.logger.Func(ctx, "ReportProducts").With("sessionID", sessionID)
+		table     = make([][]string, 0, 100)
 	)
+
+	session, ok := ct.sessions[sessionID]
+	if !ok {
+		ll.Named("session not found")
+		return c.HTML(403, "forbidden")
+	}
+
+	if session.fileDownload {
+		return c.HTML(http.StatusTooManyRequests, "the report has already been downloaded")
+	}
+
+	session.fileDownload = true
+
+	if ll != nil {
+		return c.JSON(200, "OKOKOK")
+	}
 
 	for i, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
 		tab, err := ct.mining(ctx, marketID, i == 0)

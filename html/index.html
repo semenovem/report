@@ -27,11 +27,13 @@
 
 <section>
   <a href="https://docs.ozon.ru/api/seller/#tag/ProductAPI" target="_blank"
-     referrerpolicy="no-referrer" class="wziUf"><h3>Отчетыы</h3>
+     referrerpolicy="no-referrer" class="wziUf"><h3>Отчеты</h3>
   </a>
 
   <div class="level2">
-    <form method="get" target="_blank" action="product/list">
+    <form method="post" target="_blank" action="product/list">
+      <input type="hidden" name="access_code" value="{{access_code}}">
+      <input type="hidden" name="session_id" value="{{session_id}}">
       <div>Таблица с информацией из api:
         <button type="submit">Скачать</button>
       </div>
@@ -51,26 +53,4 @@
 
 
 </section>
-
-
-<!--<section>-->
-<!--<hr/>-->
-<!--  <a href="https://docs.ozon.ru/api/seller/#tag/FinanceAPI" target="_blank"-->
-<!--     referrerpolicy="no-referrer" class="wziUf"><h3>Фин отчеты</h3>-->
-<!--  </a>-->
-
-<!--  <div class="level2">-->
-<!--    <form method="get" target="_blank">-->
-<!--      <a href="https://docs.ozon.ru/api/seller/#operation/FinanceAPI_GetRealizationReport"-->
-<!--         target="_blank"-->
-<!--         referrerpolicy="no-referrer" class="wziUf">-->
-<!--        <code>/v1/finance/realization</code></a><b style="indent-left">Отчёт о реализации-->
-<!--      товаров</b>-->
-<!--      <button type="submit">Скачать</button>-->
-<!--    </form>-->
-<!--  </div>-->
-
-<!--</section>-->
-
-
 </body>

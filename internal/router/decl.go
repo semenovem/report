@@ -12,12 +12,12 @@ import (
 )
 
 type Router struct {
-	ctx                 context.Context
-	logger              *lg.Lg
-	server              *echo.Echo
-	config              *config.Main
-	unauth, auth, admin *echo.Group
-	cnt                 *controller.Controller
+	ctx         context.Context
+	logger      *lg.Lg
+	server      *echo.Echo
+	config      *config.Main
+	auth, admin *echo.Group
+	cnt         *controller.Controller
 }
 
 func (r *Router) Start() {

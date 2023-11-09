@@ -4,6 +4,9 @@ github.com/caarlos0/env/v9
 # github.com/golang-jwt/jwt v3.2.2+incompatible
 ## explicit
 github.com/golang-jwt/jwt
+# github.com/google/uuid v1.4.0
+## explicit
+github.com/google/uuid
 # github.com/labstack/echo/v4 v4.11.2
 ## explicit; go 1.17
 github.com/labstack/echo/v4
