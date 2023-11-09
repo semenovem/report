@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/semenovem/report/config"
 	"github.com/semenovem/report/internal/controller"
-	"github.com/semenovem/report/internal/lg"
+	"github.com/semenovem/report/internal/zoo/lg"
 	"net/http"
 )
 

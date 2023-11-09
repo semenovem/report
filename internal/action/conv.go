@@ -1,4 +1,4 @@
-package controller
+package action
 
 import "github.com/semenovem/report/internal/model"
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/semenovem/report/internal/provider"
-	"github.com/semenovem/report/internal/spreadsheet"
+	"github.com/semenovem/report/internal/zoo/spreadsheet"
 	"net/http"
 	"time"
 )
@@ -30,7 +30,7 @@ func (ct *Controller) ReportProducts(c echo.Context) error {
 	session.fileDownload = true
 
 	for i, marketID := range []provider.MarketID{provider.Ozon1, provider.Ozon2} {
-		tab, err := ct.mining(ctx, marketID, i == 0)
+		tab, err := ct.dataMining.ProductListReport(ctx, marketID, i == 0)
 		if err != nil {
 			ll.Named("mining").Debug(err.Error())
 			return ct.errResponse(c, err)
@@ -47,7 +47,11 @@ func (ct *Controller) ReportProducts(c echo.Context) error {
 	var (
 		contentType = spreadsheet.ContentTypeTextCSV
 		fileExt     = spreadsheet.FileExtensionCSV
-		filename    = fmt.Sprintf("product_list.%s.%s", time.Now().Format("2006-01-02"), fileExt)
+		filename    = fmt.Sprintf(
+			"product_list.%s.%s",
+			time.Now().Format("2006-01-02"),
+			fileExt,
+		)
 	)
 
 	c.Response().Header().Set("Content-Description", "File Transfer")

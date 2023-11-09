@@ -1,4 +1,4 @@
-package controller
+package action
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func (ct *Controller) mining(
+func (ct *DataMining) ProductListReport(
 	ctx context.Context,
 	marketID provider.MarketID,
 	header bool,

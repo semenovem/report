@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/semenovem/report/config"
-	"github.com/semenovem/report/internal/lg"
+	"github.com/semenovem/report/internal/zoo/lg"
 	"io"
 	"net/http"
 )

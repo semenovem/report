@@ -3,17 +3,13 @@ package controller
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/semenovem/report/config"
-	"github.com/semenovem/report/internal/lg"
-	"github.com/semenovem/report/internal/provider"
+	"github.com/semenovem/report/internal/action"
+	"github.com/semenovem/report/internal/zoo/lg"
 	"net/http"
 	"time"
 )
 
 const (
-	stockFBS         = "fbs"
-	stockFBO         = "fbo"
-	stockCrossBorder = "crossborder"
-
 	AccessCodeName = "access_code"
 	SessionIDName  = "session_id"
 )
@@ -24,18 +20,18 @@ type requestSession struct {
 }
 
 type Controller struct {
-	config   *config.Main
-	logger   *lg.Lg
-	provider *provider.Provider
-	sessions map[string]*requestSession
+	config     *config.Main
+	logger     *lg.Lg
+	sessions   map[string]*requestSession
+	dataMining *action.DataMining
 }
 
-func New(c *config.Main, l *lg.Lg, p *provider.Provider) *Controller {
+func New(c *config.Main, l *lg.Lg, a *action.DataMining) *Controller {
 	o := &Controller{
-		config:   c,
-		logger:   l,
-		provider: p,
-		sessions: make(map[string]*requestSession),
+		config:     c,
+		logger:     l,
+		dataMining: a,
+		sessions:   make(map[string]*requestSession),
 	}
 
 	go o.clear()
