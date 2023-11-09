@@ -76,23 +76,21 @@ case "$OPER" in
   ;;
 
 "build")
-  docker build -f "${ROOT}/../Dockerfile" -t "$__DOCKER_IMAGE__" "${ROOT}/.."
+  docker build --no-cache -f "${ROOT}/../Dockerfile" -t "$__DOCKER_IMAGE__" "${ROOT}/.."
   ;;
 
 "deploy")
   has=$(docker image ls --filter=reference="marat-report" -q) || return 1
   [ -n "$has" ] && info "already started" && exit 0
 
-# --detach --restart
-  docker run -it --rm  \
+  docker run --detach --restart unless-stopped \
     --cpus=0.3 \
-    --memory 100m \
-    --memory-swap 100m \
+    --memory 300m \
+    --memory-swap 300m \
     --name="marat-report" \
     -p "28080:8080" \
-    -u "$(id -u):$(id -g)" \
     --env-file "${ROOT}/../deployment/.local.env" \
-  "$__DOCKER_IMAGE__"
+    "$__DOCKER_IMAGE__"
 
   docker logs -f "marat-report"
   ;;

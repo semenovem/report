@@ -15,4 +15,6 @@ ENV HTML_DIR=/app/html
 
 EXPOSE 8080
 
+USER nobody
+
 ENTRYPOINT "/app/app-report"
