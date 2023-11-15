@@ -67,17 +67,25 @@ func accessTokenMiddleware(
 
 			// Для индексной страницы
 			if c.Path() == "/:access_code" {
+				if c.Request().Method != http.MethodGet {
+					logClient(c, ll).Info("404 unknown request")
+					return c.HTML(404, "not found")
+				}
 				if configMain.AccessCode == c.Param(controller.AccessCodeName) {
 					return next(c)
 				}
 			} else {
+				if c.Request().Method != http.MethodPost {
+					logClient(c, ll).Info("404 unknown request")
+					return c.HTML(404, "not found")
+				}
 				// Для всех остальных
 				if configMain.AccessCode == c.FormValue(controller.AccessCodeName) {
 					return next(c)
 				}
 			}
 
-			logClient(c, ll).Info("forbidden")
+			logClient(c, ll).With("path", c.Path()).Info("forbidden")
 			return c.HTML(403, "forbidden")
 		}
 	}, nil
