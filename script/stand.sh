@@ -89,6 +89,7 @@ case "$OPER" in
     --memory-swap 300m \
     --name="marat-report" \
     -p "28080:8080" \
+    -v "/etc/ssl/certs:/etc/ssl/certs:ro" \
     --env-file "${ROOT}/../deployment/.local.env" \
     "$__DOCKER_IMAGE__"
 
